@@ -1,0 +1,600 @@
+@startuml
+       set namespaceSeparator ::
+
+       class "bp_notepad::models::bpDBModel.dart::BloodPressureDB" {
+         +int* id
+         +int* sbp
+         +int* dbp
+         +int* hr
+         +int* state
+         +String* date
+         +Map<String*, dynamic>* toMap()
+       }
+
+       class "bp_notepad::models::bsDBModel.dart::BloodSugarDB" {
+         +int* id
+         +double* glu
+         +int* state
+         +String* date
+         +Map<String*, dynamic>* toMap()
+       }
+
+       class "bp_notepad::models::alarmModel.dart::AlarmDB" {
+         +int* id
+         +int* pushID
+         +String* date
+         +String* state
+         +String* medicine
+         +String* dosage
+         +Map<String*, dynamic>* toMap()
+       }
+
+       class "bp_notepad::models::bodyModel.dart::BodyDB" {
+         +int* id
+         +int* gender
+         +double* bmi
+         +double* bf
+         +double* weight
+         +String* date
+         +Map<String*, dynamic>* toMap()
+       }
+
+       class "bp_notepad::screens::homeScreen.dart::HomeScreen" {
+         +_HomeScreenState* createState()
+       }
+
+       class "bp_notepad::screens::homeScreen.dart::_HomeScreenState" {
+         +bool* wantKeepAlive
+         +Widget* build()
+       }
+
+       "flutter::src::widgets::automatic_keep_alive.dart::AutomaticKeepAliveClientMixin" <|-- "bp_notepad::screens::homeScreen.dart::_HomeScreenState"
+
+       class "bp_notepad::screens::FunctionScreen::bsScreen.dart::Meal" {
+         +int* index
+         {static} +List<Meal*>* values
+         {static} +Meal* beforeMeal
+         {static} +Meal* afterMeal
+       }
+
+       "bp_notepad::screens::FunctionScreen::bsScreen.dart::Meal" o-- "bp_notepad::screens::FunctionScreen::bsScreen.dart::Meal"
+
+       class "bp_notepad::screens::FunctionScreen::bsScreen.dart::BloodSugar" {
+         +_BloodSugarState* createState()
+       }
+
+       class "bp_notepad::screens::FunctionScreen::bsScreen.dart::_BloodSugarState" {
+         +double* glU
+         -int* _selectedGluInt
+         -int* _selectedGluFloat
+         -TextEditingController* _voiceInputController
+         -String* _voiceInput
+         +Meal* selectedMeal
+         +List<dynamic>* checkBS()
+         -Widget* _voiceInputTextField()
+         +Widget* build()
+       }
+
+       "bp_notepad::screens::FunctionScreen::bsScreen.dart::_BloodSugarState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+       "bp_notepad::screens::FunctionScreen::bsScreen.dart::_BloodSugarState" o-- "bp_notepad::screens::FunctionScreen::bsScreen.dart::Meal"
+
+       class "bp_notepad::screens::FunctionScreen::medicineListScreen.dart::MedicineListScreen" {
+         +List<dynamic>* medicineList
+         +_MedicineListScreenState* createState()
+       }
+
+       class "bp_notepad::screens::FunctionScreen::medicineListScreen.dart::_MedicineListScreenState" {
+         +Widget* build()
+       }
+
+       class "bp_notepad::screens::FunctionScreen::ocrScreen.dart::OCRDetect" {
+         +_OCRDetectState* createState()
+       }
+
+       class "bp_notepad::screens::FunctionScreen::ocrScreen.dart::_OCRDetectState" {
+         -File* _image
+         -ImagePicker* _picker
+         -bool* _isInAsyncCall
+         +bool* isFound
+         +bool* isInstruction
+         -String* _medicineTitle
+         -String* _medicineUsage
+         -String* _medicineDosage
+         -TextEditingController* _medicineInputController
+         -String* _medicineInput
+         +List<Map<String*, dynamic>*>* result
+         -Future<dynamic>* _imageFromGallery()
+         -Future<dynamic>* _imageFromCamera()
+         -Widget* _medicineInputTextField()
+         +void initState()
+         +Widget* build()
+         +Future<dynamic>* checkData()
+         +Future<dynamic>* generalOCR()
+       }
+
+       "bp_notepad::screens::FunctionScreen::ocrScreen.dart::_OCRDetectState" o-- "dart::io::File"
+       "bp_notepad::screens::FunctionScreen::ocrScreen.dart::_OCRDetectState" o-- "image_picker::image_picker.dart::ImagePicker"
+       "bp_notepad::screens::FunctionScreen::ocrScreen.dart::_OCRDetectState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+
+       class "bp_notepad::screens::FunctionScreen::personalSettingScreen.dart::Gender" {
+         +int* index
+         {static} +List<Gender*>* values
+         {static} +Gender* male
+         {static} +Gender* female
+       }
+
+       "bp_notepad::screens::FunctionScreen::personalSettingScreen.dart::Gender" o-- "bp_notepad::screens::FunctionScreen::personalSettingScreen.dart::Gender"
+
+       class "bp_notepad::screens::FunctionScreen::personalSettingScreen.dart::PSettingScreen" {
+         +_PSettingScreenState* createState()
+       }
+
+       class "bp_notepad::screens::FunctionScreen::personalSettingScreen.dart::_PSettingScreenState" {
+         +Gender* selectedGender
+         -int* _selectedHeight
+         -int* _selectedWeightInt
+         -int* _selectedWeightFloat
+         -double* _weight
+         -int* _selectedAge
+         -int* _height
+         -int* _age
+         +bool* isHypertension
+         -String* _userName
+         -TextEditingController* _userNameInput
+         -Widget* _userNameTextField()
+         +void initState()
+         +Widget* build()
+       }
+
+       "bp_notepad::screens::FunctionScreen::personalSettingScreen.dart::_PSettingScreenState" o-- "bp_notepad::screens::FunctionScreen::personalSettingScreen.dart::Gender"
+       "bp_notepad::screens::FunctionScreen::personalSettingScreen.dart::_PSettingScreenState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+
+       class "bp_notepad::screens::FunctionScreen::bmiScreen.dart::Gender" {
+         +int* index
+         {static} +List<Gender*>* values
+         {static} +Gender* male
+         {static} +Gender* female
+       }
+
+       "bp_notepad::screens::FunctionScreen::bmiScreen.dart::Gender" o-- "bp_notepad::screens::FunctionScreen::bmiScreen.dart::Gender"
+
+       class "bp_notepad::screens::FunctionScreen::bmiScreen.dart::BmiScreen" {
+         +_BmiScreenState* createState()
+       }
+
+       class "bp_notepad::screens::FunctionScreen::bmiScreen.dart::_BmiScreenState" {
+         +Gender* selectedGender
+         -int* _selectedHeight
+         -int* _selectedWeightInt
+         -int* _selectedWeightFloat
+         +double* weight
+         -int* _selectedAge
+         +int* height
+         +int* age
+         +int* waist
+         +Widget* build()
+       }
+
+       "bp_notepad::screens::FunctionScreen::bmiScreen.dart::_BmiScreenState" o-- "bp_notepad::screens::FunctionScreen::bmiScreen.dart::Gender"
+
+       class "bp_notepad::screens::FunctionScreen::bpScreen.dart::BloodPressure" {
+         +_BloodPressureState* createState()
+       }
+
+       class "bp_notepad::screens::FunctionScreen::bpScreen.dart::_BloodPressureState" {
+         -int* _selectedSbp
+         -int* _selectedDbp
+         -int* _selectedHeartrate
+         +int* sbPressure
+         +int* dbPressure
+         +int* heartRate
+         -TextEditingController* _voiceInputController
+         -String* _voiceInput
+         -dynamic _pressureWarningDialog()
+         -dynamic _rangeWarningDialog()
+         +List<dynamic>* checkBP()
+         -Widget* _voiceInputTextField()
+         +Widget* build()
+       }
+
+       "bp_notepad::screens::FunctionScreen::bpScreen.dart::_BloodPressureState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+
+       class "bp_notepad::screens::FunctionScreen::alarmScreen.dart::AlarmScreen" {
+         +String* initialMedicineTitle
+         +String* initialMedicineDosage
+         +String* initialMedicineUsage
+         +_AlarmScreenState* createState()
+       }
+
+       class "bp_notepad::screens::FunctionScreen::alarmScreen.dart::_AlarmScreenState" {
+         -int* _pushID
+         -DateTime* _selectedDate
+         -String* _formattedDate
+         +FlutterLocalNotificationsPlugin* flutterLocalNotificationsPlugin
+         -TextEditingController* _textEditingController
+         -TextEditingController* _medicineInput
+         -TextEditingController* _dosageInput
+         -TextEditingController* _usageInput
+         -GlobalKey<FormState*>* _formKey
+         -String* _medicine
+         -String* _dosage
+         -String* _usage
+         -List<bool*>* _selections
+         +void initState()
+         +Future<dynamic>* onSelectNotification()
+         -dynamic _showNotification()
+         -dynamic _selectDate()
+         -Widget* _medicineTextField()
+         -Widget* _dosageTextField()
+         -Widget* _usageTextField()
+         +Widget* build()
+       }
+
+       "bp_notepad::screens::FunctionScreen::alarmScreen.dart::_AlarmScreenState" o-- "flutter_local_notifications::src::flutter_local_notifications_plugin.dart::FlutterLocalNotificationsPlugin"
+       "bp_notepad::screens::FunctionScreen::alarmScreen.dart::_AlarmScreenState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+       "bp_notepad::screens::FunctionScreen::alarmScreen.dart::_AlarmScreenState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+
+       class "bp_notepad::screens::mainScreen.dart::MyHomePage" {
+         +_MyHomePageState* createState()
+       }
+
+       class "bp_notepad::screens::mainScreen.dart::_MyHomePageState" {
+         -int* _selectedIndex
+         {static} -List<Widget*>* _widgetOptions
+         +Widget* build()
+       }
+
+       class "bp_notepad::screens::recordScreen.dart::RecordMeun" {
+         +Widget* build()
+       }
+
+       class "bp_notepad::screens::languageView.dart::LanguageView" {
+         +_LanguageViewState* createState()
+       }
+
+       class "bp_notepad::screens::languageView.dart::_LanguageViewState" {
+         -int* _selectedIndex
+         -void _changeLanguage()
+         +Widget* build()
+       }
+
+       class "bp_notepad::screens::ResultScreen::bmiResultScreen.dart::BMIResultScreen" {
+         +double* bmiResult
+         +double* brResult
+         +_BMIResultScreenState* createState()
+       }
+
+       class "bp_notepad::screens::ResultScreen::bmiResultScreen.dart::_BMIResultScreenState" {
+         +String* resultText
+         +Widget* build()
+       }
+
+       class "bp_notepad::screens::ResultScreen::bpResultScreen.dart::BPResultScreen" {
+         +int* sbp
+         +int* dbp
+         +int* pulse
+         +_BPResultScreenState* createState()
+       }
+
+       class "bp_notepad::screens::ResultScreen::bpResultScreen.dart::_BPResultScreenState" {
+         +String* resultText
+         +Widget* build()
+       }
+
+       class "bp_notepad::screens::ResultScreen::bsResultScreen.dart::BSResultScreen" {
+         +double* glu
+         +int* state
+         +_BSResultScreenState* createState()
+       }
+
+       class "bp_notepad::screens::ResultScreen::bsResultScreen.dart::_BSResultScreenState" {
+         +String* resultText
+         +Widget* build()
+       }
+
+       class "bp_notepad::screens::historyScreen.dart::HistoryScreen" {
+         +_HistoryScreenState* createState()
+       }
+
+       class "bp_notepad::screens::historyScreen.dart::_HistoryScreenState" {
+         -Map<DateTime*, List<dynamic>*>* _events
+         -DateTime* _selectedDay
+         -List<dynamic>* _selectedEvents
+         -AnimationController* _animationController
+         -CalendarController* _calendarController
+         -AsyncMemoizer<dynamic>* _memoizer
+         +dynamic getDatabaseEvent()
+         +void initState()
+         +void dispose()
+         -void _onDaySelected()
+         -void _onVisibleDaysChanged()
+         -void _onCalendarCreated()
+         +Widget* build()
+       }
+
+       "bp_notepad::screens::historyScreen.dart::_HistoryScreenState" o-- "flutter::src::animation::animation_controller.dart::AnimationController"
+       "bp_notepad::screens::historyScreen.dart::_HistoryScreenState" o-- "table_calendar::table_calendar.dart::CalendarController"
+       "bp_notepad::screens::historyScreen.dart::_HistoryScreenState" o-- "async::src::async_memoizer.dart::AsyncMemoizer<dynamic>"
+       "flutter::src::widgets::ticker_provider.dart::TickerProviderStateMixin" <|-- "bp_notepad::screens::historyScreen.dart::_HistoryScreenState"
+
+       class "bp_notepad::screens::aboutScreen.dart::AboutScreen" {
+         +Widget* build()
+       }
+
+       class "bp_notepad::screens::reminderScreen.dart::ReminderScreen" {
+         +_ReminderScreenState* createState()
+       }
+
+       class "bp_notepad::screens::reminderScreen.dart::_ReminderScreenState" {
+         +FlutterLocalNotificationsPlugin* flutterLocalNotificationsPlugin
+         +void initState()
+         +Future<dynamic>* onSelectNotification()
+         +Future<void>* cancelNotification()
+         -Future<void>* _handleClickMe()
+         +Widget* build()
+       }
+
+       "bp_notepad::screens::reminderScreen.dart::_ReminderScreenState" o-- "flutter_local_notifications::src::flutter_local_notifications_plugin.dart::FlutterLocalNotificationsPlugin"
+
+       class "bp_notepad::main.dart::BpNotepad" {
+         {static} +void setLocale()
+         +_BpNotepadState* createState()
+       }
+
+       class "bp_notepad::main.dart::_BpNotepadState" {
+         -Locale* _locale
+         +dynamic setLocale()
+         +void didChangeDependencies()
+         +Widget* build()
+       }
+
+       "bp_notepad::main.dart::_BpNotepadState" o-- "dart::ui::Locale"
+
+       class "bp_notepad::calc::bmiCalc.dart::BMICalculator" {
+         +int* height
+         +double* weight
+         +int* age
+         +int* waist
+         +int* gender
+         -double* _bmi
+         -double* _bf
+         +double* calculateBMI()
+         +double* calculateBF()
+       }
+
+       class "bp_notepad::components::lineChart2.dart::BSLineChart" {
+         +_BSLineChartState* createState()
+       }
+
+       class "bp_notepad::components::lineChart2.dart::_BSLineChartState" {
+         {static} +double* minx
+         {static} +double* maxx
+         {static} +double* miny
+         {static} +double* maxy
+         +int* segmentedControlGroupValue
+         +List<Color*>* gradientColors
+         +double* avg
+         +double* addAll
+         +bool* showAvg
+         +List<FlSpot*>* spotDatas
+         +List<FlSpot*>* getAvgData()
+         +Widget* build()
+         +LineChartData* mainData()
+         +LineChartData* avgData()
+       }
+
+       class "bp_notepad::components::lineChart3.dart::BmiLineChart" {
+         +_BmiLineChartState* createState()
+       }
+
+       class "bp_notepad::components::lineChart3.dart::_BmiLineChartState" {
+         {static} +double* minx
+         {static} +double* maxx
+         +int* segmentedControlGroupValue
+         +List<Color*>* gradientColors
+         +double* avg
+         +double* addAll
+         +double* max
+         +double* min
+         +bool* showAvg
+         +List<FlSpot*>* spotDatas
+         +List<FlSpot*>* getAvgData()
+         +Widget* build()
+         +LineChartData* mainData()
+         +LineChartData* avgData()
+       }
+
+       class "bp_notepad::components::iconContent.dart::IconFont" {
+         +IconData* icon
+         +String* lable
+         +TextStyle* textStyle
+         +Color* colorStyle
+         +Widget* build()
+       }
+
+       "bp_notepad::components::iconContent.dart::IconFont" o-- "flutter::src::widgets::icon_data.dart::IconData"
+       "bp_notepad::components::iconContent.dart::IconFont" o-- "flutter::src::painting::text_style.dart::TextStyle"
+       "bp_notepad::components::iconContent.dart::IconFont" o-- "dart::ui::Color"
+
+       class "bp_notepad::components::resusableCard.dart::ReusableCard" {
+         +Color* color
+         +Widget* cardChild
+         +Function* onPressed
+         +Function* onLongPressed
+         +Widget* build()
+       }
+
+       "bp_notepad::components::resusableCard.dart::ReusableCard" o-- "dart::ui::Color"
+       "bp_notepad::components::resusableCard.dart::ReusableCard" o-- "flutter::src::widgets::framework.dart::Widget"
+
+       class "bp_notepad::components::lineChart1.dart::BPLineChart" {
+         +State<StatefulWidget*>* createState()
+       }
+
+       class "bp_notepad::components::lineChart1.dart::_BPLineChartState" {
+         {static} +double* minx
+         {static} +double* maxx
+         +int* segmentedControlGroupValue
+         +double* sbpAvg
+         +double* dbpAvg
+         +double* sbpAll
+         +double* dbpAll
+         +int* max
+         +int* min
+         +List<FlSpot*>* sbpSpotsData
+         +List<FlSpot*>* dbpSpotsData
+         +bool* showAvg
+         +List<FlSpot*>* getSBPAvgData()
+         +List<FlSpot*>* getDBPAvgData()
+         +Widget* build()
+         +LineChartData* mainData()
+         +List<LineChartBarData*>* linesBarData1()
+         +LineChartData* avgData()
+         +List<LineChartBarData*>* linesBarData2()
+       }
+
+       class "bp_notepad::components::buttomButton.dart::ButtomButton" {
+         +Function* onTap
+         +String* buttonTitle
+         +Widget* build()
+       }
+
+       class "bp_notepad::db::body_databaseProvider.dart::BodyDataBaseProvider" {
+         {static} +String* TABLE_NAME
+         {static} +String* COLUMN_ID
+         {static} +String* COLUMN_TIME
+         {static} +String* COLUMN_BMI
+         {static} +String* COLUMN_BF
+         {static} +String* COLUMN_WEIGHT
+         {static} +String* COLUMN_GENDER
+         {static} +BodyDataBaseProvider* db
+         -Database* _database
+         +Future<Database*>* database
+         +Future<Database*>* createDatabase()
+         +Future<dynamic>* checkFirstLogin()
+         +Future<List<dynamic>*>* getGraphData()
+         +Future<List<BodyDB*>*>* getData()
+         +Future<BodyDB*>* insert()
+         +Future<int*>* delete()
+       }
+
+       "bp_notepad::db::body_databaseProvider.dart::BodyDataBaseProvider" o-- "bp_notepad::db::body_databaseProvider.dart::BodyDataBaseProvider"
+       "bp_notepad::db::body_databaseProvider.dart::BodyDataBaseProvider" o-- "sqflite_common::sqlite_api.dart::Database"
+
+       class "bp_notepad::db::bp_databaseProvider.dart::BpDataBaseProvider" {
+         {static} +String* TABLE_NAME
+         {static} +String* COLUMN_ID
+         {static} +String* COLUMN_TIME
+         {static} +String* COLUMN_SBP
+         {static} +String* COLUMN_DBP
+         {static} +String* COLUMN_HR
+         {static} +String* COLUMN_STATE
+         {static} +BpDataBaseProvider* db
+         -Database* _database
+         +Future<Database*>* database
+         +Future<Database*>* createDatabase()
+         +Future<List<dynamic>*>* getGraphData()
+         +Future<List<BloodPressureDB*>*>* getData()
+         +Future<BloodPressureDB*>* insert()
+         +Future<int*>* delete()
+       }
+
+       "bp_notepad::db::bp_databaseProvider.dart::BpDataBaseProvider" o-- "bp_notepad::db::bp_databaseProvider.dart::BpDataBaseProvider"
+       "bp_notepad::db::bp_databaseProvider.dart::BpDataBaseProvider" o-- "sqflite_common::sqlite_api.dart::Database"
+
+       class "bp_notepad::db::alarm_databaseProvider.dart::AlarmDataBaseProvider" {
+         {static} +String* TABLE_NAME
+         {static} +String* COLUMN_ID
+         {static} +String* COLUMN_DATE
+         {static} +String* COLUMN_MEDICINE
+         {static} +String* COLUMN_DOSAGE
+         {static} +String* COLUMN_STATE
+         {static} +String* COLUMN_PUSHID
+         {static} +AlarmDataBaseProvider* db
+         -Database* _database
+         +Future<Database*>* database
+         +Future<Database*>* createDatabase()
+         +Future<List<AlarmDB*>*>* getData()
+         +Future<List<dynamic>*>* getNotification()
+         +Future<AlarmDB*>* insert()
+         +Future<int*>* delete()
+         +Future<int*>* update()
+       }
+
+       "bp_notepad::db::alarm_databaseProvider.dart::AlarmDataBaseProvider" o-- "bp_notepad::db::alarm_databaseProvider.dart::AlarmDataBaseProvider"
+       "bp_notepad::db::alarm_databaseProvider.dart::AlarmDataBaseProvider" o-- "sqflite_common::sqlite_api.dart::Database"
+
+       class "bp_notepad::db::bs_databaseProvider.dart::BsDataBaseProvider" {
+         {static} +String* TABLE_NAME
+         {static} +String* COLUMN_ID
+         {static} +String* COLUMN_TIME
+         {static} +String* COLUMN_GLU
+         {static} +String* COLUMN_STATE
+         {static} +BsDataBaseProvider* db
+         -Database* _database
+         +Future<Database*>* database
+         +Future<Database*>* createDatabase()
+         +Future<List<dynamic>*>* getGraphData()
+         +Future<List<BloodSugarDB*>*>* getData()
+         +Future<BloodSugarDB*>* insert()
+         +Future<int*>* delete()
+       }
+
+       "bp_notepad::db::bs_databaseProvider.dart::BsDataBaseProvider" o-- "bp_notepad::db::bs_databaseProvider.dart::BsDataBaseProvider"
+       "bp_notepad::db::bs_databaseProvider.dart::BsDataBaseProvider" o-- "sqflite_common::sqlite_api.dart::Database"
+
+       class "bp_notepad::request::flutterTencentOCR.dart::FlutterTencentOcr" {
+         {static} +Future<T*>* ocrRequest()
+         {static} +String* sha256Hex()
+         {static} +List<int*>* hmac256()
+       }
+
+       class "bp_notepad::events::reminderBloc.dart::ReminderBloc" {
+         +List<AlarmDB*>* initialState
+         +Stream<List<AlarmDB*>*>* mapEventToState()
+       }
+
+       abstract class "bp_notepad::events::reminderEvent.dart::ReminderEvent" {
+       }
+
+       class "bp_notepad::events::reminderEvent.dart::SetAlarms" {
+         +List<AlarmDB*>* alarmList
+       }
+
+       class "bp_notepad::events::reminderEvent.dart::DeleteAlarm" {
+         +int* alarmIndex
+       }
+
+       class "bp_notepad::events::reminderEvent.dart::AddAlarm" {
+         +AlarmDB* newAlarm
+       }
+
+       "bp_notepad::events::reminderEvent.dart::AddAlarm" o-- "bp_notepad::models::alarmModel.dart::AlarmDB"
+
+       class "bp_notepad::localization::appLocalization.dart::AppLocalization" {
+         +Locale* locale
+         -Map<String*, String*>* _localizedStrings
+         {static} +LocalizationsDelegate<AppLocalization*>* delegate
+         {static} +AppLocalization* of()
+         +Future<void>* load()
+         +String* translate()
+       }
+
+       "bp_notepad::localization::appLocalization.dart::AppLocalization" o-- "dart::ui::Locale"
+       "bp_notepad::localization::appLocalization.dart::AppLocalization" o-- "flutter::src::widgets::localizations.dart::LocalizationsDelegate<AppLocalization>"
+
+       class "bp_notepad::localization::appLocalization.dart::_AppLocalizationsDelegate" {
+         +bool* isSupported()
+         +Future<AppLocalization*>* load()
+         +bool* shouldReload()
+       }
+
+       class "bp_notepad::localization::language.dart::Language" {
+         +int* id
+         +String* name
+         +String* languageCode
+         {static} +List<Language*>* languageList()
+       }
+
+
+       @enduml
