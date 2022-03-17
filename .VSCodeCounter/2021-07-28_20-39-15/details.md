@@ -12,7 +12,7 @@ Total : 46 files,  19258 codes, 466 comments, 452 blanks, all 20176 lines
 | filename | language | code | comment | blank | total |
 | :--- | :--- | ---: | ---: | ---: | ---: |
 | [lib/calc/bmiCalc.dart](/lib/calc/bmiCalc.dart) | Dart | 30 | 2 | 7 | 39 |
-| [lib/components/buttomButton.dart](/lib/components/buttomButton.dart) | Dart | 29 | 1 | 2 | 32 |
+| [lib/components/buttomButton.dart](/components/buttonButton.dart) | Dart | 29 | 1 | 2 | 32 |
 | [lib/components/constants.dart](/lib/components/constants.dart) | Dart | 101 | 2 | 22 | 125 |
 | [lib/components/iconContent.dart](/lib/components/iconContent.dart) | Dart | 25 | 1 | 3 | 29 |
 | [lib/components/lineChart1.dart](/lib/components/lineChart1.dart) | Dart | 445 | 22 | 13 | 480 |

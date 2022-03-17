@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:bp_notepad/components/constants.dart';
 
-class ButtomButton extends StatelessWidget {
-  ButtomButton({@required this.onTap, @required this.buttonTitle});
+class ButtonButton extends StatelessWidget {
+  ButtonButton({@required this.onTap, @required this.buttonTitle});
   final Function onTap;
   final String buttonTitle;
   @override
@@ -14,7 +14,7 @@ class ButtomButton extends StatelessWidget {
         child: Center(
           child: Text(
             buttonTitle,
-            style: kButtomLableTextStyle,
+            style: kButtonLabelTextStyle,
           ),
         ),
         margin: EdgeInsets.all(5.0),

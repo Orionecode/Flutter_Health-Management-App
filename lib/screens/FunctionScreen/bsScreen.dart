@@ -1,7 +1,7 @@
 /* 添加血糖记录界面 */
 import 'package:bp_notepad/components/iconContent.dart';
 import 'package:bp_notepad/components/resusableCard.dart';
-import 'package:bp_notepad/components/buttomButton.dart';
+import 'package:bp_notepad/components/buttonButton.dart';
 import 'package:bp_notepad/components/constants.dart';
 import 'package:bp_notepad/db/bs_databaseProvider.dart';
 import 'package:bp_notepad/localization/appLocalization.dart';
@@ -285,7 +285,7 @@ class _BloodSugarState extends State<BloodSugar> {
                     ),
                   ),
                 ),
-                ButtomButton(
+                ButtonButton(
                   onTap: () {
                     if (_voiceInput != "") {
                       print(_voiceInput);

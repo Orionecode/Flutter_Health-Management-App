@@ -13,7 +13,7 @@ Total : 57 files,  21968 codes, 525 comments, 647 blanks, all 23140 lines
 | :--- | :--- | ---: | ---: | ---: | ---: |
 | [lib/OkFit.plantuml](/lib/OkFit.plantuml) | PlantUML | 513 | 0 | 87 | 600 |
 | [lib/calc/bmiCalc.dart](/lib/calc/bmiCalc.dart) | Dart | 30 | 2 | 7 | 39 |
-| [lib/components/buttomButton.dart](/lib/components/buttomButton.dart) | Dart | 29 | 1 | 2 | 32 |
+| [lib/components/buttomButton.dart](/components/buttonButton.dart) | Dart | 29 | 1 | 2 | 32 |
 | [lib/components/constants.dart](/lib/components/constants.dart) | Dart | 105 | 2 | 23 | 130 |
 | [lib/components/iconContent.dart](/lib/components/iconContent.dart) | Dart | 25 | 1 | 3 | 29 |
 | [lib/components/lineChart1.dart](/lib/components/lineChart1.dart) | Dart | 462 | 18 | 14 | 494 |

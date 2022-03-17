@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bp_notepad/components/buttomButton.dart';
+import 'package:bp_notepad/components/buttonButton.dart';
 import 'package:bp_notepad/components/constants.dart';
 import 'package:bp_notepad/components/resusableCard.dart';
 import 'package:bp_notepad/localization/appLocalization.dart';
@@ -146,7 +146,7 @@ class _OCRDetectState extends State<OCRDetect> {
                             ],
                           ),
                         ),
-                        ButtomButton(
+                        ButtonButton(
                           onTap: () {
                             HapticFeedback.mediumImpact();
                             result.clear();

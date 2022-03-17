@@ -1,5 +1,5 @@
 /* 添加血压记录界面 */
-import 'package:bp_notepad/components/buttomButton.dart';
+import 'package:bp_notepad/components/buttonButton.dart';
 import 'package:bp_notepad/components/resusableCard.dart';
 import 'package:bp_notepad/components/constants.dart';
 import 'package:bp_notepad/db/bp_databaseProvider.dart';
@@ -464,7 +464,7 @@ class _BloodPressureState extends State<BloodPressure> {
                     ),
                   ),
                 ),
-                ButtomButton(
+                ButtonButton(
                   onTap: () {
                     if (_voiceInput != "") {
                       print(_voiceInput);

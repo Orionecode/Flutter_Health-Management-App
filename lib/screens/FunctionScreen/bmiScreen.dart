@@ -9,7 +9,7 @@ import 'package:bp_notepad/components/resusableCard.dart';
 import 'package:bp_notepad/components/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:bp_notepad/components/buttomButton.dart';
+import 'package:bp_notepad/components/buttonButton.dart';
 import 'package:bp_notepad/screens/ResultScreen/bmiResultScreen.dart';
 import 'package:bp_notepad/calc/bmiCalc.dart';
 
@@ -431,7 +431,7 @@ class _BmiScreenState extends State<BmiScreen> {
                     },
                   ),
                 ),
-                ButtomButton(
+                ButtonButton(
                   buttonTitle:
                       AppLocalization.of(context).translate('calc_buttom'),
                   onTap: () {

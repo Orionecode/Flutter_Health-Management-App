@@ -1,6 +1,6 @@
 /* 添加提醒用药界面 */
 import 'dart:math';
-import 'package:bp_notepad/components/buttomButton.dart';
+import 'package:bp_notepad/components/buttonButton.dart';
 import 'package:bp_notepad/components/resusableCard.dart';
 import 'package:bp_notepad/db/alarm_databaseProvider.dart';
 import 'package:bp_notepad/events/reminderBloc.dart';
@@ -302,7 +302,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
                                       backGroundColor, context),
                                 ),
                               ),
-                              ButtomButton(
+                              ButtonButton(
                                 onTap: () {
                                   _formKey.currentState.save();
                                   if (_medicine != '') {

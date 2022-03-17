@@ -15,7 +15,7 @@ const kBottomContainerColour = const Color(0xFFEB1555); //颜色:确定按钮的
 const kWhiteColour = const Color(0xFFFFFFFF); //颜色:白色
 const kDarkColour = const Color(0xFF262729);
 
-const kButtomLableTextStyle = TextStyle(
+const kButtonLabelTextStyle = TextStyle(
   fontSize: 28.0,
   color: const Color(0xFFFFFFFF),
 );
