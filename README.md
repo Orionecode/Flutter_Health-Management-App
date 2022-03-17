@@ -1,7 +1,7 @@
 # Flutter_Health Management App
 
 Welcome, this project has been completed in July 2021
-
+[中文介绍](https://github.com/Orionecode/Flutter_Health-Management-App/blob/master/README-ZH_CN.md)
 ---
 
 This is an application that uses the Flutter framework, SQFLite as a database to record 
