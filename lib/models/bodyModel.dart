@@ -2,12 +2,12 @@
 import 'package:bp_notepad/db/body_databaseProvider.dart';
 
 class BodyDB {
-  int id;
-  int gender;
-  double bmi;
-  double bf;
-  double weight;
-  String date;
+  int? id;
+  int? gender;
+  double? bmi;
+  double? bf;
+  double? weight;
+  String? date;
 
   BodyDB({this.gender, this.weight, this.bmi, this.bf, this.date});
 
@@ -20,9 +20,7 @@ class BodyDB {
       BodyDataBaseProvider.COLUMN_WEIGHT: weight,
       BodyDataBaseProvider.COLUMN_GENDER: gender,
     };
-    if (id != null) {
-      map[BodyDataBaseProvider.COLUMN_ID] = id;
-    }
+    map[BodyDataBaseProvider.COLUMN_ID] = id;
     return map;
   }
 

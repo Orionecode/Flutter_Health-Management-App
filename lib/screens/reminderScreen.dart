@@ -31,17 +31,17 @@ List<Icon> icons = [
   ),
 ];
 
-Icon _iconState; //切换图标的显示
+late Icon _iconState; //切换图标的显示
 
 class ReminderScreen extends StatefulWidget {
-  const ReminderScreen({Key key}) : super(key: key);
+  const ReminderScreen({Key? key}) : super(key: key);
 
   @override
   _ReminderScreenState createState() => _ReminderScreenState();
 }
 
 class _ReminderScreenState extends State<ReminderScreen> {
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin; //声明一个本地提醒的插件
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin; //声明一个本地提醒的插件
 
   @override
   void initState() {
@@ -54,20 +54,34 @@ class _ReminderScreenState extends State<ReminderScreen> {
 
     flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
     var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
-    var iOS = new IOSInitializationSettings();
-    var initSetttings = new InitializationSettings(android: android, iOS: iOS);
-    flutterLocalNotificationsPlugin.initialize(initSetttings,
-        onSelectNotification: onSelectNotification);
+    var iOS =
+    DarwinInitializationSettings(
+        onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    var initSettings = new InitializationSettings(android: android, iOS: iOS);
+    flutterLocalNotificationsPlugin.initialize(initSettings,
+        onDidReceiveNotificationResponse: onDidReceiveNotificationResponse);
+  }
+  Future onDidReceiveLocalNotification(
+      int id, String? title, String? body, String? payload) async {
+
+    // Handle notification received
+    debugPrint("Notification Received: $payload");
+
   }
 
   // ignore: missing_return
-  Future onSelectNotification(String payload) {
+  Future onDidReceiveNotificationResponse(NotificationResponse response) async {
+
+    // Get payload from response
+    String? payload = response.payload;
+
+    // Handle response
     debugPrint("payload : $payload");
     showDialog(
       context: context,
-      builder: (_) => new AlertDialog(
-        title: new Text('Notification'),
-        content: new Text('$payload'),
+      builder: (_) => AlertDialog(
+        title: Text('Notification'),
+        content: Text('$payload'),
       ),
     );
   }
@@ -93,11 +107,11 @@ class _ReminderScreenState extends State<ReminderScreen> {
             actions: <Widget>[
               CupertinoDialogAction(
                 onPressed: () =>
-                    AlarmDataBaseProvider.db.delete(alarm.id).then((_) {
+                    AlarmDataBaseProvider.db.delete(alarm.id!).then((_) {
                   BlocProvider.of<ReminderBloc>(context).add(
                     DeleteAlarm(index),
                   );
-                  cancelNotification(alarm.pushID);
+                  cancelNotification(alarm.pushID!);
                   Navigator.pop(context);
                 }),
                 child: Text(AppLocalization.of(context).translate('delete')),

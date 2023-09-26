@@ -18,6 +18,7 @@ class SleepLineChart extends StatefulWidget {
 class _SleepLineChartState extends State<SleepLineChart> {
   static const double minx = 0;
   static const double maxx = 9;
+
   //绘制图表X轴Y轴的起点和终点
 
   int segmentedControlGroupValue = 10;
@@ -58,44 +59,44 @@ class _SleepLineChartState extends State<SleepLineChart> {
             if (snapshot.hasData) {
               int showLength = 0;
               int addLength = 0;
-              if (snapshot.data.length - segmentedControlGroupValue > 0) {
-                showLength = snapshot.data.length - segmentedControlGroupValue;
+              if (snapshot.data!.length - segmentedControlGroupValue > 0) {
+                showLength = snapshot.data!.length - segmentedControlGroupValue;
                 addLength = segmentedControlGroupValue;
               } else {
-                addLength = snapshot.data.length;
+                addLength = snapshot.data!.length;
               }
-              if (snapshot.data.length >= 10) {
+              if (snapshot.data!.length >= 10) {
                 //可以完整显示最近的十条记录
                 spotDatas.clear();
                 addAll = 0;
                 for (int x = 0; x < addLength; x++) {
                   //获取最大值和最小值
-                  if (snapshot.data[x + showLength] > max) {
-                    max = snapshot.data[x + showLength];
-                  } else if (snapshot.data[x + showLength] < min) {
-                    min = snapshot.data[x + showLength];
+                  if (snapshot.data?[x + showLength] > max) {
+                    max = snapshot.data?[x + showLength];
+                  } else if (snapshot.data?[x + showLength] < min) {
+                    min = snapshot.data?[x + showLength];
                   }
                   //添加数值到spotData
-                  spotDatas
-                      .add(FlSpot(x.toDouble(), snapshot.data[x + showLength]));
-                  addAll += snapshot.data[x + showLength];
+                  spotDatas.add(
+                      FlSpot(x.toDouble(), snapshot.data?[x + showLength]));
+                  addAll += snapshot.data?[x + showLength];
                 }
                 avg = addAll / addLength;
               } else {
                 //不能完整显示最近的十条记录
                 if (spotDatas.isEmpty)
-                  for (int x = 0; x < snapshot.data.length; x++) {
+                  for (int x = 0; x < snapshot.data!.length; x++) {
                     //获取最大值和最小值
-                    if (snapshot.data[x] > max) {
-                      max = snapshot.data[x];
-                    } else if (snapshot.data[x] < min) {
-                      min = snapshot.data[x];
+                    if (snapshot.data?[x] > max) {
+                      max = snapshot.data?[x];
+                    } else if (snapshot.data?[x] < min) {
+                      min = snapshot.data?[x];
                     }
                     //添加数值到spotData
-                    spotDatas.add((FlSpot(x.toDouble(), snapshot.data[x])));
-                    addAll += snapshot.data[x];
+                    spotDatas.add((FlSpot(x.toDouble(), snapshot.data?[x])));
+                    addAll += snapshot.data?[x];
                   }
-                avg = addAll / snapshot.data.length;
+                avg = addAll / snapshot.data!.length;
               }
               return Container(
                   decoration: const BoxDecoration(
@@ -133,12 +134,12 @@ class _SleepLineChartState extends State<SleepLineChart> {
                             },
                             onValueChanged: (i) {
                               setState(() {
-                                segmentedControlGroupValue = i;
+                                segmentedControlGroupValue = i as int;
                               });
                             }),
                         Text(
                           AppLocalization.of(context)
-                                      .translate('sleep_chart_title'),
+                              .translate('sleep_chart_title'),
                           style: TextStyle(
                               color: const Color(0xFFFFFFFF),
                               fontSize: 32,
@@ -206,79 +207,81 @@ class _SleepLineChartState extends State<SleepLineChart> {
       ),
       titlesData: FlTitlesData(
         show: true,
-        bottomTitles: SideTitles(
+        bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
-          getTextStyles: (value) => const TextStyle(
-              color: const Color(0xB3FFFFFF),
-              fontWeight: FontWeight.bold,
-              fontSize: 12),
-          getTitles: (value) {
+          // getTextStyles: (value,titleMeta) => const TextStyle(
+          //     color: const Color(0xB3FFFFFF),
+          //     fontWeight: FontWeight.bold,
+          //     fontSize: 12),
+          getTitlesWidget: (value, titleMeta) {
             switch (value.toInt()) {
               case 0:
-                return '1';
+                return Text('1');
               case 4:
-                return '5';
+                return Text('5');
               case 9:
-                return '10';
+                return Text('10');
               case 14:
-                return '15';
+                return Text('15');
               case 19:
-                return '20';
+                return Text('20');
               case 24:
-                return '25';
+                return Text('25');
               case 29:
-                return '30';
+                return Text('30');
             }
-            return '';
+            return Text('');
           },
-          margin: 8,
-        ),
-        leftTitles: SideTitles(
+          // margin: 8,
+        )),
+        leftTitles: AxisTitles(
+            sideTitles: SideTitles(
           showTitles: true,
-          getTextStyles: (value) => const TextStyle(
-            color: const Color(0xB3FFFFFF),
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
-          ),
-          getTitles: (value) {
+          // getTextStyles: (value,titleMeta) => const TextStyle(
+          //   color: const Color(0xB3FFFFFF),
+          //   fontWeight: FontWeight.bold,
+          //   fontSize: 15,
+          // ),
+          getTitlesWidget: (value, titleMeta) {
             switch (value.toInt()) {
               case 0:
-                return '0';
+                return Text('0');
               case 10:
-                return '10';
+                return Text('10');
               case 20:
-                return '20';
+                return Text('20');
               case 30:
-                return '30';
+                return Text('30');
               case 40:
-                return '40';
+                return Text('40');
               case 50:
-                return '50';
+                return Text('50');
               case 60:
-                return '60';
+                return Text('60');
               case 70:
-                return '70';
+                return Text('70');
               case 80:
-                return '80';
+                return Text('80');
               case 90:
-                return '90';
+                return Text('90');
               case 100:
-                return '100';
+                return Text('100');
               case 110:
-                return '110';
+                return Text('110');
               case 120:
-                return '120';
+                return Text('120');
               case 130:
-                return '130';
+                return Text('130');
               case 140:
-                return '140';
+                return Text('140');
             }
-            return '';
+            return Text('');
           },
           reservedSize: 28,
-          margin: 12,
-        ),
+          // margin: 12,
+        )),
       ),
       borderData: FlBorderData(
           show: true,
@@ -305,7 +308,7 @@ class _SleepLineChartState extends State<SleepLineChart> {
         LineChartBarData(
           spots: spotDatas,
           isCurved: true,
-          colors: gradientColors,
+          gradient: LinearGradient(colors: gradientColors),
           barWidth: 3,
           isStrokeCapRound: true,
           curveSmoothness: 0,
@@ -313,10 +316,12 @@ class _SleepLineChartState extends State<SleepLineChart> {
             show: true,
           ),
           belowBarData: BarAreaData(
-            show: true,
-            colors:
-                gradientColors.map((color) => color.withOpacity(0.3)).toList(),
-          ),
+              show: true,
+              gradient: LinearGradient(
+                colors: gradientColors
+                    .map((color) => color.withOpacity(0.3))
+                    .toList(),
+              )),
         ),
       ],
     );
@@ -330,65 +335,66 @@ class _SleepLineChartState extends State<SleepLineChart> {
       ),
       titlesData: FlTitlesData(
         show: true,
-        bottomTitles: SideTitles(
+        bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
-          getTextStyles: (value) => const TextStyle(
-              color: Color(0xff68737d),
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
-          getTitles: (value) {
-            switch (value.toInt()) {
-            }
-            return '';
+          // getTextStyles: (value, titleMeta) => const TextStyle(
+          //     color: Color(0xff68737d),
+          //     fontWeight: FontWeight.bold,
+          //     fontSize: 16),
+          getTitlesWidget: (value, titleMeta) {
+            switch (value.toInt()) {}
+            return Text('');
           },
-          margin: 8,
-        ),
-        leftTitles: SideTitles(
+          // margin: 8,
+        )),
+        leftTitles: AxisTitles(
+            sideTitles: SideTitles(
           showTitles: true,
-          getTextStyles: (value) => const TextStyle(
-            color: const Color(0xff67727d),
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
-          ),
-          getTitles: (value) {
+          // getTextStyles: (value, titleMeta) => const TextStyle(
+          //   color: const Color(0xff67727d),
+          //   fontWeight: FontWeight.bold,
+          //   fontSize: 15,
+          // ),
+          getTitlesWidget: (value, titleMeta) {
             switch (value.toInt()) {
               case 0:
-                return '0';
+                return Text('0');
               case 10:
-                return '10';
+                return Text('10');
               case 20:
-                return '20';
+                return Text('20');
               case 30:
-                return '30';
+                return Text('30');
               case 40:
-                return '40';
+                return Text('40');
               case 50:
-                return '50';
+                return Text('50');
               case 60:
-                return '60';
+                return Text('60');
               case 70:
-                return '70';
+                return Text('70');
               case 80:
-                return '80';
+                return Text('80');
               case 90:
-                return '90';
+                return Text('90');
               case 100:
-                return '100';
+                return Text('100');
               case 110:
-                return '110';
+                return Text('110');
               case 120:
-                return '120';
+                return Text('120');
               case 130:
-                return '130';
+                return Text('130');
               case 140:
-                return '140';
+                return Text('140');
             }
-            return '';
+            return Text('');
           },
           reservedSize: 28,
-          margin: 12,
-        ),
+          // margin: 12,
+        )),
       ),
       borderData: FlBorderData(
           show: true,
@@ -415,25 +421,30 @@ class _SleepLineChartState extends State<SleepLineChart> {
         LineChartBarData(
           spots: getAvgData(),
           isCurved: true,
-          colors: [
+          gradient: LinearGradient(colors: [
             ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                .lerp(0.2),
+                .lerp(0.2)!,
             ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                .lerp(0.2),
-          ],
+                .lerp(0.2)!,
+          ]),
           barWidth: 3,
           isStrokeCapRound: true,
           dotData: FlDotData(
             show: false,
           ),
-          belowBarData: BarAreaData(show: true, colors: [
-            ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                .lerp(0.2)
-                .withOpacity(0.1),
-            ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                .lerp(0.2)
-                .withOpacity(0.1),
-          ]),
+          belowBarData: BarAreaData(
+            show: true,
+            gradient: LinearGradient(
+              colors: [
+                ColorTween(begin: gradientColors[0], end: gradientColors[1])
+                    .lerp(0.2)!
+                    .withOpacity(0.1),
+                ColorTween(begin: gradientColors[0], end: gradientColors[1])
+                    .lerp(0.2)!
+                    .withOpacity(0.1),
+              ],
+            ),
+          ),
         ),
       ],
     );
