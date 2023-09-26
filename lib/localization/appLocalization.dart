@@ -10,11 +10,11 @@ class AppLocalization {
   AppLocalization(this.locale);
 
   static AppLocalization of(BuildContext context) {
-    return Localizations.of<AppLocalization>(context, AppLocalization);
+    return Localizations.of<AppLocalization>(context, AppLocalization)!;
   }
 
   // 将json文件读取到一个map中，方便使用
-  Map<String, String> _localizedStrings;
+  Map<String, String> _localizedStrings ={};
 
   // load函数来读取json文件
   Future<void> load() async {
@@ -29,7 +29,7 @@ class AppLocalization {
 
   //翻译，translate会在每个widget需要的时候被调用
   String translate(String key) {
-    return _localizedStrings[key];
+    return _localizedStrings[key]!;
   }
 
   // static member to have simple access to the delegate from Material App

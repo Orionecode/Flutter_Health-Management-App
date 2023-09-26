@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:bp_notepad/components/constants.dart';
 
 class ButtonButton extends StatelessWidget {
-  ButtonButton({@required this.onTap, @required this.buttonTitle});
-  final Function onTap;
+  ButtonButton({required this.onTap, required this.buttonTitle});
+  final VoidCallback onTap;
   final String buttonTitle;
   @override
   Widget build(BuildContext context) {

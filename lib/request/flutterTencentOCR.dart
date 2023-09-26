@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 
 import 'package:crypto/crypto.dart';
@@ -10,6 +9,7 @@ import 'package:hex/hex.dart';
 
 ///数据解析回调
 typedef T JsonParse<T>(dynamic data);
+typedef CreateHttpClient = HttpClient Function();
 
 class FlutterTencentOcr {
   /// 发起请求
@@ -19,14 +19,14 @@ class FlutterTencentOcr {
     String secretKey,
     String action,
     requestDataJson, {
-    JsonParse<T> jsonParse,
+    JsonParse<T>? jsonParse,
     String service = "ocr",
     String host = "ocr.tencentcloudapi.com",
     String algorithm = "TC3-HMAC-SHA256",
     String contentType = "application/json; charset=utf-8",
     String version = "2018-11-19",
     String region = "ap-guangzhou",
-    String findProxy,
+    String? findProxy,
   }) async {
     DateTime nowTime = DateTime.now();
     String date =
@@ -118,18 +118,15 @@ class FlutterTencentOcr {
     try {
       Dio dio = Dio();
 
-      if (findProxy != null) {
-        (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-            (client) {
-          client.findProxy = (uri) {
-            return "PROXY $findProxy";
-          };
-          client.badCertificateCallback =
-              (X509Certificate cert, String host, int port) {
-            return true;
-          };
-        };
-      }
+      var client = HttpClient();
+
+      client.findProxy = (uri) {
+        return "PROXY $findProxy";
+      };
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) {
+        return true;
+      };
 
       Response<Map<String, dynamic>> response = await dio.post('https://$host/',
           options: Options(
@@ -138,17 +135,17 @@ class FlutterTencentOcr {
           ),
           data: payloadJson);
 
-      if (response.data["Response"] != null) {
+      if (response.data?["Response"] != null) {
         if (jsonParse != null) {
-          return jsonParse(response.data["Response"]);
+          return jsonParse(response.data?["Response"]);
         } else {
-          return response.data["Response"];
+          return response.data?["Response"];
         }
       } else {
-        throw (Future.error(
-            DioError(error: "腾讯OCR数据下发格式异常", requestOptions: null)));
+        throw (Future.error(DioException(
+            error: "腾讯OCR数据下发格式异常", requestOptions: RequestOptions())));
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       throw (Future.error(e));
     } catch (e) {
       throw (Future.error(e));

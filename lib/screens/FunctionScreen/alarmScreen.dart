@@ -19,12 +19,12 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:intl/intl.dart';
 
 class AlarmScreen extends StatefulWidget {
-  final String initialMedicineTitle;
-  final String initialMedicineDosage;
-  final String initialMedicineUsage;
+  final String? initialMedicineTitle;
+  final String? initialMedicineDosage;
+  final String? initialMedicineUsage;
 
   const AlarmScreen({
-    Key key,
+    Key? key,
     this.initialMedicineTitle,
     this.initialMedicineDosage,
     this.initialMedicineUsage,
@@ -38,11 +38,11 @@ class _AlarmScreenState extends State<AlarmScreen> {
   DateTime _selectedDate = DateTime.now(); //获取一个当前的日期
   String _formattedDate =
       DateFormat('yyyy-MM-dd kk:mm').format(DateTime.now()); //获取一个格式化后的当前日期
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin; //声明一个本地提醒的插件
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin; //声明一个本地提醒的插件
   final TextEditingController _textEditingController = TextEditingController();
-  TextEditingController _medicineInput;
-  TextEditingController _dosageInput;
-  TextEditingController _usageInput;
+  late TextEditingController _medicineInput;
+  late TextEditingController _dosageInput;
+  late TextEditingController _usageInput;
 
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
@@ -63,20 +63,37 @@ class _AlarmScreenState extends State<AlarmScreen> {
     _usageInput = TextEditingController(text: widget.initialMedicineUsage);
     flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
     var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
-    var iOS = new IOSInitializationSettings();
+    var iOS =
+    DarwinInitializationSettings(
+        onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+
     var initSetttings = new InitializationSettings(android: android, iOS: iOS);
     flutterLocalNotificationsPlugin.initialize(initSetttings,
-        onSelectNotification: onSelectNotification);
+        onDidReceiveNotificationResponse: onDidReceiveNotificationResponse);
+
   }
 
   // ignore: missing_return
-  Future onSelectNotification(String payload) {
+  Future onDidReceiveLocalNotification(
+      int id, String? title, String? body, String? payload) async {
+
+    // Handle notification received
+    debugPrint("Notification Received: $payload");
+
+  }
+
+  Future onDidReceiveNotificationResponse(NotificationResponse response) async {
+
+    // Get payload from response
+    String? payload = response.payload;
+
+    // Handle response
     debugPrint("payload : $payload");
     showDialog(
       context: context,
-      builder: (_) => new AlertDialog(
-        title: new Text('Notification'),
-        content: new Text('$payload'),
+      builder: (_) => AlertDialog(
+        title: Text('Notification'),
+        content: Text('$payload'),
       ),
     );
   }
@@ -103,11 +120,11 @@ class _AlarmScreenState extends State<AlarmScreen> {
     var android = new AndroidNotificationDetails(
         'Reminder_Channel$_pushID',
         'Medication reminders',
-        'Reminder to take medication at the time you specify',
+        channelDescription: 'Reminder to take medication at the time you specify',
         priority: Priority.high,
         importance: Importance.max);
     // IOS设备
-    var iOS = new IOSNotificationDetails(threadIdentifier: "thread_id");
+    var iOS = new DarwinNotificationDetails(threadIdentifier: "thread_id");
     var platform = new NotificationDetails(android: android, iOS: iOS);
     await flutterLocalNotificationsPlugin.zonedSchedule(
         _pushID,
@@ -117,16 +134,16 @@ class _AlarmScreenState extends State<AlarmScreen> {
         platform,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
-        androidAllowWhileIdle: true);
+        androidScheduleMode: AndroidScheduleMode.exact);
     print(_pushID);
   }
 
   _selectDate() async {
-    DateTime pickedDate = await showModalBottomSheet<DateTime>(
+    DateTime? pickedDate = await showModalBottomSheet<DateTime>(
       backgroundColor: CupertinoDynamicColor.resolve(modalGroundColor, context),
       context: context,
       builder: (context) {
-        DateTime tempPickedDate;
+        DateTime? tempPickedDate;
         return Container(
           height: 350,
           child: Column(
@@ -175,9 +192,9 @@ class _AlarmScreenState extends State<AlarmScreen> {
         );
       },
     );
-    if (pickedDate != null && pickedDate != _selectedDate) {
+    if (pickedDate != _selectedDate) {
       setState(() {
-        _selectedDate = pickedDate;
+        _selectedDate = pickedDate!;
         _textEditingController.text = pickedDate.toString();
         _formattedDate = DateFormat('yyyy-MM-dd kk:mm').format(_selectedDate);
       });
@@ -304,7 +321,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
                               ),
                               ButtonButton(
                                 onTap: () {
-                                  _formKey.currentState.save();
+                                  _formKey.currentState?.save();
                                   if (_medicine != '') {
                                     _medicineInput.text = _medicine;
                                   }

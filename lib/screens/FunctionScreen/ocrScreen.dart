@@ -21,7 +21,7 @@ class OCRDetect extends StatefulWidget {
 }
 
 class _OCRDetectState extends State<OCRDetect> {
-  File _image;
+  late File _image;
   final _picker = ImagePicker();
   bool _isInAsyncCall = false;
   bool isFound = false;
@@ -29,13 +29,13 @@ class _OCRDetectState extends State<OCRDetect> {
   String _medicineTitle = '';
   String _medicineUsage = '';
   String _medicineDosage = '';
-  TextEditingController _medicineInputController;
-  String _medicineInput;
+  late TextEditingController _medicineInputController;
+  late String _medicineInput;
   List<Map<String, dynamic>> result = [];
 
   Future _imageFromGallery() async {
     final pickedImgae =
-        await _picker.getImage(source: ImageSource.gallery, imageQuality: 50);
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
     setState(() {
       if (pickedImgae != null) {
         _image = File(pickedImgae.path);
@@ -48,7 +48,7 @@ class _OCRDetectState extends State<OCRDetect> {
 
   Future _imageFromCamera() async {
     final pickedFile =
-        await _picker.getImage(source: ImageSource.camera, imageQuality: 50);
+        await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
 
     setState(() {
       if (pickedFile != null) {

@@ -28,7 +28,7 @@ class _BloodSugarState extends State<BloodSugar> {
   int _selectedGluInt = 4;
   int _selectedGluFloat = 0;
 
-  TextEditingController _voiceInputController;
+  late TextEditingController _voiceInputController;
   String _voiceInput = '';
 
   List checkBS(String text) {
@@ -38,7 +38,7 @@ class _BloodSugarState extends State<BloodSugar> {
       RegExp c = new RegExp(r'([0-9]{1,2}?)+(\.[0-9]{1,2})');
       Iterable<Match> matches = c.allMatches(text);
       for (Match m in matches) {
-        double match = double.parse(m[0]);
+        double match = double.parse(m[0]!);
         bsData.add(match);
       }
     } else if (text.contains("后")) {
@@ -46,7 +46,7 @@ class _BloodSugarState extends State<BloodSugar> {
       RegExp c = new RegExp(r'([0-9]{1,2}?)+(\.[0-9]{1,2})');
       Iterable<Match> matches = c.allMatches(text);
       for (Match m in matches) {
-        double match = double.parse(m[0]);
+        double match = double.parse(m[0]!);
         bsData.add(match);
       }
     }
@@ -72,7 +72,7 @@ class _BloodSugarState extends State<BloodSugar> {
     );
   }
 
-  Meal selectedMeal;
+  late Meal selectedMeal;
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -111,7 +111,7 @@ class _BloodSugarState extends State<BloodSugar> {
                                 backGroundColor, context),
                         cardChild: IconFont(
                           icon: CupertinoIcons.battery_25,
-                          lable: AppLocalization.of(context)
+                          label: AppLocalization.of(context)
                               .translate('before_meal_state'),
                           textStyle: selectedMeal == Meal.beforeMeal
                               ? kSelctedTextStyle
@@ -135,7 +135,7 @@ class _BloodSugarState extends State<BloodSugar> {
                                 backGroundColor, context),
                         cardChild: IconFont(
                           icon: CupertinoIcons.battery_100,
-                          lable: AppLocalization.of(context)
+                          label: AppLocalization.of(context)
                               .translate('after_meal_state'),
                           textStyle: selectedMeal == Meal.afterMeal
                               ? kSelctedTextStyle
@@ -286,7 +286,7 @@ class _BloodSugarState extends State<BloodSugar> {
                   ),
                 ),
                 ButtonButton(
-                  onTap: () {
+                  onTap: () async {
                     if (_voiceInput != "") {
                       print(_voiceInput);
                       List bsList = checkBS(_voiceInput);
@@ -308,7 +308,7 @@ class _BloodSugarState extends State<BloodSugar> {
                                   builder: (context) => BSResultScreen(
                                       glu: bsList[2], state: bsList[1])));
                         } else {
-                          return showDialog<void>(
+                          return await showDialog(
                               context: context,
                               barrierDismissible:
                                   false, // user must tap button!
