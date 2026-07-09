@@ -5,19 +5,19 @@ import 'package:bp_notepad/localization/appLocalization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:bp_notepad/components/constants.dart';
 
-TextStyle selectedStyle;
+TextStyle? selectedStyle;
 
 class SleepResultScreen extends StatefulWidget {
   final double sleep;
   final int state;
-  SleepResultScreen({this.sleep, this.state});
+  SleepResultScreen({required this.sleep, required this.state});
 
   @override
   _SleepResultScreenState createState() => _SleepResultScreenState();
 }
 
 class _SleepResultScreenState extends State<SleepResultScreen> {
-  String resultText;
+  late String resultText;
 
   Widget build(BuildContext context) {
     var deviceData = MediaQuery.of(context);

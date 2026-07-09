@@ -5,9 +5,9 @@ import 'package:bp_notepad/screens/FunctionScreen/alarmScreen.dart';
 import 'package:flutter/cupertino.dart';
 
 class MedicineListScreen extends StatefulWidget {
-  final List medicineList;
+  final List? medicineList;
 
-  const MedicineListScreen({Key key, this.medicineList}) : super(key: key);
+  const MedicineListScreen({Key? key, this.medicineList}) : super(key: key);
 
   @override
   _MedicineListScreenState createState() => _MedicineListScreenState();
@@ -25,9 +25,9 @@ class _MedicineListScreenState extends State<MedicineListScreen> {
       ),
       child: ListView.builder(
           padding: EdgeInsets.only(top: 5.0),
-          itemCount: widget.medicineList.length,
+          itemCount: widget.medicineList?.length,
           itemBuilder: (BuildContext context, index) {
-            List _medicine = widget.medicineList[index].values.toList();
+            List _medicine = widget.medicineList?[index].values.toList();
             print(_medicine);
             return ReusableCard(
                 color: CupertinoDynamicColor.resolve(backGroundColor, context),

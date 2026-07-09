@@ -5,10 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:bp_notepad/components/constants.dart';
 import 'package:bp_notepad/components/resusableCard.dart';
 
-TextStyle selectedStyle;
+TextStyle? selectedStyle;
 
 class BMIResultScreen extends StatefulWidget {
-  BMIResultScreen({this.bmiResult, this.brResult});
+  BMIResultScreen({required this.bmiResult, required this.brResult});
 
   final double bmiResult;
   final double brResult;
@@ -18,23 +18,23 @@ class BMIResultScreen extends StatefulWidget {
 }
 
 class _BMIResultScreenState extends State<BMIResultScreen> {
-  String resultText;
+  String? resultText;
 
   @override
   Widget build(BuildContext context) {
     var deviceData = MediaQuery.of(context);
-    if (widget.bmiResult > 25 || widget.bmiResult < 18.5) {
+    if (widget.bmiResult> 25 || widget.bmiResult< 18.5) {
       selectedStyle = kWarningResultTextStyle;
     } else {
       selectedStyle = kBMINormalResultTextStyle;
     }
-    if (widget.bmiResult > 25 && widget.bmiResult <= 30) {
+    if (widget.bmiResult> 25 && widget.bmiResult<= 30) {
       resultText = AppLocalization.of(context).translate('overweight');
-    } else if (widget.bmiResult > 18.5 && widget.bmiResult <= 25) {
+    } else if (widget.bmiResult> 18.5 && widget.bmiResult<= 25) {
       resultText = AppLocalization.of(context).translate('healthy_weight');
-    } else if (widget.bmiResult <= 18.5) {
+    } else if (widget.bmiResult<= 18.5) {
       resultText = AppLocalization.of(context).translate('underweight');
-    } else if (widget.bmiResult > 30) {
+    } else if (widget.bmiResult> 30) {
       resultText = AppLocalization.of(context).translate('obese');
     } else {
       resultText = 'Error';
@@ -71,7 +71,7 @@ class _BMIResultScreenState extends State<BMIResultScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                resultText.toUpperCase(),
+                                resultText!.toUpperCase(),
                                 style: selectedStyle,
                               ),
 

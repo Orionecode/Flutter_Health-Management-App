@@ -2,12 +2,12 @@
 import 'package:bp_notepad/db/alarm_databaseProvider.dart';
 
 class AlarmDB {
-  int id;
-  int pushID;
-  String date;
-  String state;
-  String medicine;
-  String dosage;
+  int? id;
+  int? pushID;
+  String? date;
+  String? state;
+  String? medicine;
+  String? dosage;
 
   AlarmDB({
     this.id,
@@ -27,10 +27,8 @@ class AlarmDB {
       AlarmDataBaseProvider.COLUMN_DOSAGE: dosage,
       AlarmDataBaseProvider.COLUMN_PUSHID: pushID,
     };
-    if (id != null) {
-      map[AlarmDataBaseProvider.COLUMN_ID] = id;
-    }
-    return map;
+    map[AlarmDataBaseProvider.COLUMN_ID] = id;
+      return map;
   }
 
   AlarmDB.fromMap(Map<String, dynamic> map) {

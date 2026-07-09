@@ -15,15 +15,13 @@ class BpDataBaseProvider {
   BpDataBaseProvider._();
   static final BpDataBaseProvider db = BpDataBaseProvider._();
 
-  Database _database;
+  Database? _database;
 
-  //get database在flutter中为getter的写法
+  // Returns the database, generally no need to change
   Future<Database> get database async {
-    if (_database != null) {
-      return _database;
-    }
+    if (_database != null) return _database!;
     _database = await createDatabase();
-    return _database;
+    return _database!;
   }
 
 //注意数据类型

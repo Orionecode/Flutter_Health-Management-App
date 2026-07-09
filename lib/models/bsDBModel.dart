@@ -2,10 +2,10 @@
 import 'package:bp_notepad/db/bs_databaseProvider.dart';
 
 class BloodSugarDB {
-  int id;
-  double glu;
-  int state;
-  String date;
+  int? id;
+  double? glu;
+  int? state;
+  String? date;
 
   BloodSugarDB({this.id, this.glu, this.state, this.date});
 
@@ -16,10 +16,8 @@ class BloodSugarDB {
       BsDataBaseProvider.COLUMN_STATE: state,
       BsDataBaseProvider.COLUMN_TIME: date
     };
-    if (id != null) {
-      map[BsDataBaseProvider.COLUMN_ID] = id;
-    }
-    return map;
+    map[BsDataBaseProvider.COLUMN_ID] = id;
+      return map;
   }
 
   BloodSugarDB.fromMap(Map<String, dynamic> map) {

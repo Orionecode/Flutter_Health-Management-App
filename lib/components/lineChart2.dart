@@ -11,10 +11,10 @@ class BSLineChart extends StatefulWidget {
 }
 
 class _BSLineChartState extends State<BSLineChart> {
-  static const double minx = 0;
-  static const double maxx = 9;
-  static const double miny = 0;
-  static const double maxy = 14;
+  static const double minX = 0;
+  static const double maxX = 9;
+  static const double minY = 0;
+  static const double maxY = 14;
 
   int segmentedControlGroupValue = 10;
 
@@ -24,21 +24,22 @@ class _BSLineChartState extends State<BSLineChart> {
     const Color(0xff02d39a),
     const Color(0xff02d39a),
   ];
+
   //分值图标渐变色的配色
 
   double avg = 0; //平均值
   double addAll = 0; //用于计算平均值的总值
 
   bool showAvg = false;
-  List<FlSpot> spotDatas = []; //绘制曲线图表的点
+  List<FlSpot> spotData = []; //绘制曲线图表的点
 
 //获得平均值的点
   List<FlSpot> getAvgData() {
-    List<FlSpot> avgSpotDatas = []; //一个growable的List必须使用.add进行数据装填
-    for (int x = 0; x <= maxx; x++) {
-      avgSpotDatas.add(FlSpot(x.toDouble(), avg));
+    List<FlSpot> avgSpotData = []; //一个growable的List必须使用.add进行数据装填
+    for (int x = 0; x <= maxX; x++) {
+      avgSpotData.add(FlSpot(x.toDouble(), avg));
     }
-    return avgSpotDatas;
+    return avgSpotData;
   }
 
   @override
@@ -50,29 +51,29 @@ class _BSLineChartState extends State<BSLineChart> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               int showLength = 0;
-              int addLength = 0;
-              if (snapshot.data.length - segmentedControlGroupValue > 0) {
-                showLength = snapshot.data.length - segmentedControlGroupValue;
+              int? addLength = 0;
+              if (snapshot.data!.length - segmentedControlGroupValue > 0) {
+                showLength = snapshot.data!.length - segmentedControlGroupValue;
                 addLength = segmentedControlGroupValue;
               } else {
-                addLength = snapshot.data.length;
+                addLength = snapshot.data?.length;
               }
-              if (snapshot.data.length >= 10) {
-                spotDatas.clear();
+              if (snapshot.data!.length >= 10) {
+                spotData.clear();
                 addAll = 0;
-                for (int x = 0; x < addLength; x++) {
-                  spotDatas
-                      .add(FlSpot(x.toDouble(), snapshot.data[x + showLength]));
-                  addAll += snapshot.data[x + showLength];
+                for (int x = 0; x < addLength!; x++) {
+                  spotData.add(
+                      FlSpot(x.toDouble(), snapshot.data?[x + showLength]));
+                  addAll += snapshot.data?[x + showLength];
                 }
                 avg = addAll / addLength;
               } else {
-                if (spotDatas.isEmpty)
-                  for (int x = 0; x < snapshot.data.length; x++) {
-                    spotDatas.add((FlSpot(x.toDouble(), snapshot.data[x])));
-                    addAll += snapshot.data[x];
+                if (spotData.isEmpty)
+                  for (int x = 0; x < snapshot.data!.length; x++) {
+                    spotData.add((FlSpot(x.toDouble(), snapshot.data?[x])));
+                    addAll += snapshot.data?[x];
                   }
-                avg = addAll / snapshot.data.length;
+                avg = addAll / snapshot.data!.length;
               }
               return Container(
                   decoration: const BoxDecoration(
@@ -110,7 +111,7 @@ class _BSLineChartState extends State<BSLineChart> {
                             },
                             onValueChanged: (i) {
                               setState(() {
-                                segmentedControlGroupValue = i;
+                                segmentedControlGroupValue = i as int;
                               });
                             }),
                         Text(
@@ -183,66 +184,68 @@ class _BSLineChartState extends State<BSLineChart> {
       ),
       titlesData: FlTitlesData(
         show: true,
-        bottomTitles: SideTitles(
+        bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
-          getTextStyles: (value) => const TextStyle(
-              color: const Color(0xB3FFFFFF),
-              fontWeight: FontWeight.bold,
-              fontSize: 12),
-          getTitles: (value) {
+          // getTextStyles: (value) => const TextStyle(
+          //     color: const Color(0xB3FFFFFF),
+          //     fontWeight: FontWeight.bold,
+          //     fontSize: 12),
+          getTitlesWidget: (value, titleMeta) {
             switch (value.toInt()) {
               case 0:
-                return '1';
+                return Text('1');
               case 4:
-                return '5';
+                return Text('5');
               case 9:
-                return '10';
+                return Text('10');
               case 14:
-                return '15';
+                return Text('15');
               case 19:
-                return '20';
+                return Text('20');
               case 24:
-                return '25';
+                return Text('25');
               case 29:
-                return '30';
+                return Text('30');
             }
-            return '';
+            return Text('');
           },
-          margin: 8,
-        ),
-        leftTitles: SideTitles(
+          // margin: 8,
+        )),
+        leftTitles: AxisTitles(
+            sideTitles: SideTitles(
           showTitles: true,
-          getTextStyles: (value) => const TextStyle(
-            // color: Color(0xff67727d),
-            color: const Color(0xB3FFFFFF),
-            fontWeight: FontWeight.bold,
-            fontSize: 14,
-          ),
-          getTitles: (value) {
+          // getTextStyles: (value) => const TextStyle(
+          //   // color: Color(0xff67727d),
+          //   color: const Color(0xB3FFFFFF),
+          //   fontWeight: FontWeight.bold,
+          //   fontSize: 14,
+          // ),
+          getTitlesWidget: (value, titleMeta) {
             switch (value.toInt()) {
               case 0:
-                return '0';
+                return Text('0');
               case 2:
-                return '2';
+                return Text('2');
               case 4:
-                return '4';
+                return Text('4');
               case 6:
-                return '6';
+                return Text('6');
               case 8:
-                return '8';
+                return Text('8');
               case 10:
-                return '10';
+                return Text('10');
               case 12:
-                return '12';
+                return Text('12');
               case 14:
-                return '14';
+                return Text('14');
             }
-            return '';
+            return Text('');
           },
-          margin: 8,
+          // margin: 8,
           reservedSize: 30,
-        ),
+        )),
       ),
       borderData: FlBorderData(
           show: true,
@@ -258,16 +261,16 @@ class _BSLineChartState extends State<BSLineChart> {
               color: Colors.transparent,
             ),
           )),
-      minX: minx,
+      minX: minX,
       maxX: (segmentedControlGroupValue - 1).toDouble(),
-      minY: miny,
-      maxY: maxy,
+      minY: minY,
+      maxY: maxY,
       lineBarsData: [
         LineChartBarData(
-          spots: spotDatas,
+          spots: spotData,
           isCurved: true,
           curveSmoothness: 0,
-          colors: gradientColors,
+          gradient: LinearGradient(colors: gradientColors),
           barWidth: 3,
           isStrokeCapRound: true,
           dotData: FlDotData(
@@ -275,8 +278,10 @@ class _BSLineChartState extends State<BSLineChart> {
           ),
           belowBarData: BarAreaData(
             show: true,
-            colors:
-                gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+            gradient: LinearGradient(
+                colors: gradientColors
+                    .map((color) => color.withOpacity(0.3))
+                    .toList()),
           ),
         ),
       ],
@@ -291,51 +296,52 @@ class _BSLineChartState extends State<BSLineChart> {
       ),
       titlesData: FlTitlesData(
         show: true,
-        bottomTitles: SideTitles(
+        bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
-          getTextStyles: (value) => const TextStyle(
-              color: Color(0xff68737d),
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
-          getTitles: (value) {
-            switch (value.toInt()) {
-            }
-            return '';
+          // getTextStyles: (value) => const TextStyle(
+          //     color: Color(0xff68737d),
+          //     fontWeight: FontWeight.bold,
+          //     fontSize: 16),
+          getTitlesWidget: (value, titleMeta) {
+            switch (value.toInt()) {}
+            return Text('');
           },
-          margin: 8,
-        ),
-        leftTitles: SideTitles(
+          // margin: 8,
+        )),
+        leftTitles: AxisTitles(
+            sideTitles: SideTitles(
           showTitles: true,
-          getTextStyles: (value) => const TextStyle(
-            color: const Color(0xff67727d),
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
-          ),
-          getTitles: (value) {
+          // getTextStyles: (value) => const TextStyle(
+          //   color: const Color(0xff67727d),
+          //   fontWeight: FontWeight.bold,
+          //   fontSize: 15,
+          // ),
+          getTitlesWidget: (value, titleMeta) {
             switch (value.toInt()) {
               case 0:
-                return '0';
+                return Text('0');
               case 2:
-                return '2';
+                return Text('2');
               case 4:
-                return '4';
+                return Text('4');
               case 6:
-                return '6';
+                return Text('6');
               case 8:
-                return '8';
+                return Text('8');
               case 10:
-                return '10';
+                return Text('10');
               case 12:
-                return '12';
+                return Text('12');
               case 14:
-                return '14';
+                return Text('14');
             }
-            return '';
+            return Text('');
           },
           reservedSize: 30,
-          margin: 8,
-        ),
+          // margin: 8,
+        )),
       ),
       borderData: FlBorderData(
           show: true,
@@ -354,33 +360,35 @@ class _BSLineChartState extends State<BSLineChart> {
               color: Colors.transparent,
             ),
           )),
-      minX: minx,
-      maxX: maxx,
-      minY: miny,
-      maxY: maxy,
+      minX: minX,
+      maxX: maxX,
+      minY: minY,
+      maxY: maxY,
       lineBarsData: [
         LineChartBarData(
           spots: getAvgData(),
           isCurved: true,
-          colors: [
+          gradient: LinearGradient(colors: [
             ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                .lerp(0.2),
+                .lerp(0.2)!,
             ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                .lerp(0.2),
-          ],
+                .lerp(0.2)!,
+          ]),
           barWidth: 3,
           isStrokeCapRound: true,
           dotData: FlDotData(
             show: false,
           ),
-          belowBarData: BarAreaData(show: true, colors: [
-            ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                .lerp(0.2)
-                .withOpacity(0.1),
-            ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                .lerp(0.2)
-                .withOpacity(0.1),
-          ]),
+          belowBarData: BarAreaData(
+              show: true,
+              gradient: LinearGradient(colors: [
+                ColorTween(begin: gradientColors[0], end: gradientColors[1])
+                    .lerp(0.2)!
+                    .withOpacity(0.1),
+                ColorTween(begin: gradientColors[0], end: gradientColors[1])
+                    .lerp(0.2)!
+                    .withOpacity(0.1),
+              ])),
         ),
       ],
     );

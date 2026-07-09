@@ -12,22 +12,24 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:async/async.dart';
 
 class HistoryScreen extends StatefulWidget {
-  HistoryScreen({Key key}) : super(key: key);
+  HistoryScreen({Key? key}) : super(key: key);
+
   @override
   _HistoryScreenState createState() => _HistoryScreenState();
 }
 
 class _HistoryScreenState extends State<HistoryScreen>
     with TickerProviderStateMixin {
-  Map<DateTime, List> _events = {};
+  Map<DateTime, List<String>> _events = {};
   final _selectedDay = DateTime.now();
-  List _selectedEvents;
-  AnimationController _animationController;
-  CalendarController _calendarController;
-  AsyncMemoizer _memoizer;
+  late List<DateTime> _selectedEvents;
+  AnimationController? _animationController;
+
+  // CalendarController _calendarController;
+  late AsyncMemoizer _memorizer;
 
   getDatabaseEvent() async {
-    return this._memoizer.runOnce(() async {
+    return this._memorizer.runOnce(() async {
       Future<List> bpEvents = BpDataBaseProvider.db.getData();
       Future<List> bsEvents = BsDataBaseProvider.db.getData();
       Future<List> bmiEvents = BodyDataBaseProvider.db.getData();
@@ -120,31 +122,36 @@ class _HistoryScreenState extends State<HistoryScreen>
   void initState() {
     super.initState();
 
-    _memoizer = AsyncMemoizer();
+    _memorizer = AsyncMemoizer();
 
-    _selectedEvents = _events[_selectedDay] ?? [];
+    _selectedEvents =
+        _events[_selectedDay]?.map((date) => DateTime.parse(date)).toList() ??
+            [];
 
-    _calendarController = CalendarController();
+    // _calendarController = CalendarController();
 
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
     );
 
-    _animationController.forward();
+    _animationController?.forward();
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
-    _calendarController.dispose();
+    _animationController?.dispose();
+    // _calendarController.dispose();
     super.dispose();
   }
 
-  void _onDaySelected(DateTime day, List events, List holidays) {
+  void _onDaySelected(
+    DateTime day,
+    DateTime focusedDay,
+  ) {
     // print('CALLBACK: _onDaySelected');
     setState(() {
-      _selectedEvents = events;
+      _selectedEvents.add(focusedDay);
     });
   }
 
@@ -153,8 +160,7 @@ class _HistoryScreenState extends State<HistoryScreen>
     // print('CALLBACK: _onVisibleDaysChanged');
   }
 
-  void _onCalendarCreated(
-      DateTime first, DateTime last, CalendarFormat format) {
+  void _onCalendarCreated(PageController pageController) {
     // print('CALLBACK: _onCalendarCreated');
   }
 
@@ -178,11 +184,14 @@ class _HistoryScreenState extends State<HistoryScreen>
                   return Column(
                     children: <Widget>[
                       TableCalendar(
-                        locale: 'zh_CN',
-                        calendarController: _calendarController,
-                        events: snapshot.data,
-                        initialCalendarFormat: CalendarFormat.month,
-                        formatAnimation: FormatAnimation.slide,
+                        firstDay: DateTime.utc(2020, 10, 16),
+                        lastDay: DateTime.utc(2030, 3, 14),
+                        focusedDay: DateTime.now(),
+                        locale: 'en_US',
+                        // calendarController: _calendarController,
+                        // events: snapshot.data,
+                        // initialCalendarFormat: CalendarFormat.month,
+                        // formatAnimation: FormatAnimation.slide,
                         startingDayOfWeek: StartingDayOfWeek.sunday,
                         availableGestures: AvailableGestures.all,
                         availableCalendarFormats: const {
@@ -190,19 +199,19 @@ class _HistoryScreenState extends State<HistoryScreen>
                           CalendarFormat.week: '',
                         },
                         calendarStyle: CalendarStyle(
-                          selectedColor: CupertinoColors.systemRed,
-                          todayColor: Colors.red[200],
+                          // selectedColor: CupertinoColors.systemRed,
+                          // todayColor: Colors.red[200],
                           outsideDaysVisible: false,
-                          weekdayStyle: TextStyle().copyWith(
-                              color: CupertinoDynamicColor.resolve(
-                                  textColor, context)),
-                          eventDayStyle: TextStyle().copyWith(
-                              color: CupertinoDynamicColor.resolve(
-                                  textColor, context)),
-                          weekendStyle: TextStyle()
-                              .copyWith(color: CupertinoColors.systemGrey),
-                          holidayStyle: TextStyle()
-                              .copyWith(color: CupertinoColors.systemBlue),
+                          // weekdayStyle: TextStyle().copyWith(
+                          //     color: CupertinoDynamicColor.resolve(
+                          //         textColor, context)),
+                          // eventDayStyle: TextStyle().copyWith(
+                          //     color: CupertinoDynamicColor.resolve(
+                          //         textColor, context)),
+                          // weekendStyle: TextStyle()
+                          //     .copyWith(color: CupertinoColors.systemGrey),
+                          // holidayStyle: TextStyle()
+                          //     .copyWith(color: CupertinoColors.systemBlue),
                         ),
                         daysOfWeekStyle: DaysOfWeekStyle(
                           weekendStyle: TextStyle()
@@ -213,51 +222,45 @@ class _HistoryScreenState extends State<HistoryScreen>
                               fontSize: 16,
                               color: CupertinoDynamicColor.resolve(
                                   textColor, context)),
-                          centerHeaderTitle: true,
+                          // centerHeaderTitle: true,
                           formatButtonVisible: false,
                         ),
-                        builders: CalendarBuilders(
-                          markersBuilder: (context, date, events, holidays) {
-                            final children = <Widget>[];
+                        calendarBuilders: CalendarBuilders(
+                          markerBuilder: (context, date, events) {
                             if (events.isNotEmpty) {
-                              children.add(
-                                Positioned(
-                                    right: 1,
-                                    bottom: 1,
-                                    child: AnimatedContainer(
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: _calendarController
-                                                .isSelected(date)
-                                            ? CupertinoColors.systemRed
-                                            : _calendarController.isToday(date)
-                                                ? Colors.red[200]
-                                                : CupertinoColors.activeBlue,
+                              return Positioned(
+                                right: 1,
+                                bottom: 1,
+                                child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 300),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: date == DateTime.now()
+                                        ? Colors.red[200]
+                                        : CupertinoColors.activeBlue,
+                                  ),
+                                  width: 20.0,
+                                  height: 20.0,
+                                  child: Center(
+                                    child: Text(
+                                      '${events.length}',
+                                      style: TextStyle().copyWith(
+                                        color: Colors.white,
+                                        fontSize: 12.0,
                                       ),
-                                      width: 20.0,
-                                      height: 20.0,
-                                      child: Center(
-                                        child: Text(
-                                          '${events.length}',
-                                          style: TextStyle().copyWith(
-                                            color: Colors.white,
-                                            fontSize: 12.0,
-                                          ),
-                                        ),
-                                      ),
-                                    )),
+                                    ),
+                                  ),
+                                ),
                               );
                             }
-                            return children;
+                            return null;
                           },
                         ),
-                        onDaySelected: (date, events, holidays) {
-                          _onDaySelected(date, events, holidays);
-                          _animationController.forward(from: 0.0);
+                        onDaySelected: (selectedDay, focusedDay) {
+                          _onDaySelected(selectedDay, focusedDay);
+                          _animationController?.forward(from: 0.0);
                         },
-                        onVisibleDaysChanged: _onVisibleDaysChanged,
+                        // onVisibleDaysChanged: _onVisibleDaysChanged,
                         onCalendarCreated: _onCalendarCreated,
                       ),
                       const SizedBox(height: 8.0),

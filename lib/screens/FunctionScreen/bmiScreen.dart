@@ -24,7 +24,7 @@ class BmiScreen extends StatefulWidget {
 }
 
 class _BmiScreenState extends State<BmiScreen> {
-  Gender selectedGender;
+   Gender? selectedGender;
   int _selectedHeight = 160;
   int _selectedWeightInt = 50;
   int _selectedWeightFloat = 0;
@@ -65,7 +65,7 @@ class _BmiScreenState extends State<BmiScreen> {
                             : CupertinoDynamicColor.resolve(backGroundColor, context),
                         cardChild: IconFont(
                           icon: FontAwesomeIcons.mars,
-                          lable: AppLocalization.of(context).translate('male'),
+                          label: AppLocalization.of(context).translate('male'),
                           textStyle: selectedGender == Gender.male
                               ? kSelctedTextStyle
                               : kLabelTextStyle,
@@ -89,7 +89,7 @@ class _BmiScreenState extends State<BmiScreen> {
                             : CupertinoDynamicColor.resolve(backGroundColor, context),
                         cardChild: IconFont(
                           icon: FontAwesomeIcons.venus,
-                          lable:
+                          label:
                               AppLocalization.of(context).translate('female'),
                           textStyle: selectedGender == Gender.female
                               ? kSelctedTextStyle
@@ -434,7 +434,7 @@ class _BmiScreenState extends State<BmiScreen> {
                 ButtonButton(
                   buttonTitle:
                       AppLocalization.of(context).translate('calc_buttom'),
-                  onTap: () {
+                  onTap: () async {
                     double bmiResult = 0;
                     double bfResult = 0;
                     if (selectedGender != null) {
@@ -442,7 +442,7 @@ class _BmiScreenState extends State<BmiScreen> {
                           height: height,
                           weight: weight,
                           age: age,
-                          gender: selectedGender.index);
+                          gender: selectedGender!.index);
                       var date = new DateTime.now().toLocal();
                       String time =
                           "${date.year.toString()}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}";
@@ -454,7 +454,7 @@ class _BmiScreenState extends State<BmiScreen> {
                             bf: bfResult,
                             weight: weight,
                             date: time,
-                            gender: selectedGender.index);
+                            gender: selectedGender!.index);
                         BodyDataBaseProvider.db.insert(bmiDB);
                         Navigator.push(
                           context,
@@ -466,7 +466,7 @@ class _BmiScreenState extends State<BmiScreen> {
                           ),
                         );
                       } else {
-                        return showDialog<void>(
+                        return await showDialog(
                             context: context,
                             barrierDismissible: false, // user must tap button!
                             builder: (BuildContext context) {

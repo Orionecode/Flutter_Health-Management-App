@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 
 class LanguageView extends StatefulWidget {
-  LanguageView({Key key}) : super(key: key);
+  LanguageView({Key? key}) : super(key: key);
 
   @override
   _LanguageViewState createState() => _LanguageViewState();

@@ -117,7 +117,7 @@ Future<void> generateInvoice() async {
   drawGrid2(page6, pageSize, grid6, result);
   // Add invoice footer
   //Save and launch the document
-  final List<int> bytes = document.save();
+  final List<int> bytes = await document.save();
   //Dispose the document.
   document.dispose();
   //Get the storage folder location using path_provider package.
@@ -159,7 +159,7 @@ PdfLayoutResult drawHeader(PdfPage page, Size pageSize, PdfGrid grid) {
   return PdfTextElement(text: address, font: contentFont).draw(
       page: page,
       bounds: Rect.fromLTWH(30, 120, pageSize.width - (contentSize.width + 30),
-          pageSize.height - 120));
+          pageSize.height - 120))!;
 }
 
 //Draws the grid
@@ -178,7 +178,7 @@ PdfLayoutResult drawGrid(
   };
   //Draw the PDF grid and get the result.
   result = grid.draw(
-      page: page, bounds: Rect.fromLTWH(0, result.bounds.bottom + 40, 0, 0));
+      page: page, bounds: Rect.fromLTWH(0, result.bounds.bottom + 40, 0, 0))!;
   return result;
 }
 
@@ -197,7 +197,7 @@ PdfLayoutResult drawGrid2(
     }
   };
   //Draw the PDF grid and get the result.
-  result = grid.draw(page: page, bounds: Rect.fromLTWH(0, 0, 0, 0));
+  result = grid.draw(page: page, bounds: Rect.fromLTWH(0, 0, 0, 0))!;
   return result;
 }
 

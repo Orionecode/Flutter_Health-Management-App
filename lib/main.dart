@@ -14,9 +14,9 @@ void main() {
 }
 
 class BpNotepad extends StatefulWidget {
-  const BpNotepad({Key key}) : super(key: key);
+  const BpNotepad({Key? key}) : super(key: key);
   static void setLocale(BuildContext context, Locale newLocale) {
-    _BpNotepadState state = context.findAncestorStateOfType<_BpNotepadState>();
+    _BpNotepadState state = context.findAncestorStateOfType<_BpNotepadState>()!;
     state.setLocale(newLocale);
   }
 
@@ -25,7 +25,7 @@ class BpNotepad extends StatefulWidget {
 }
 
 class _BpNotepadState extends State<BpNotepad> {
-  Locale _locale;
+  late Locale _locale;
   setLocale(Locale locale) {
     setState(() {
       _locale = locale;
@@ -66,7 +66,7 @@ class _BpNotepadState extends State<BpNotepad> {
             ],
             // localization logic，返回需要使用的local，检查我们需要使用的语言是否在supportedLocales当中
             localeResolutionCallback: (locale, supportedLocales) {
-              sysSupportedLocales.add(locale.languageCode);
+              sysSupportedLocales.add(locale?.languageCode);
               for (var supportedLocale in supportedLocales) {
                 // 选择首选语言进行语言设置
                 if (supportedLocale.languageCode == sysSupportedLocales.first) {

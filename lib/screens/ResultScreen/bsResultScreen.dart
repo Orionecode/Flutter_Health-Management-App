@@ -5,19 +5,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:bp_notepad/components/constants.dart';
 import 'package:bp_notepad/components/lineChart2.dart';
 
-TextStyle selectedStyle;
+TextStyle? selectedStyle;
 
 class BSResultScreen extends StatefulWidget {
   final double glu;
   final int state;
-  BSResultScreen({this.glu, this.state});
+  BSResultScreen({required this.glu, required this.state});
 
   @override
   _BSResultScreenState createState() => _BSResultScreenState();
 }
 
 class _BSResultScreenState extends State<BSResultScreen> {
-  String resultText;
+  late String resultText;
 
   Widget build(BuildContext context) {
     var deviceData = MediaQuery.of(context);

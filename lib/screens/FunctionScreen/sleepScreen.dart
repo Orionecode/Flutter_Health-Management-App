@@ -28,7 +28,7 @@ class _SleepScreenState extends State<SleepScreen> {
   int _selectedTimeInt = 7;
   int _selectedTimeFloat = 0;
 
-  TextEditingController _voiceInputController;
+  late TextEditingController _voiceInputController;
   String _voiceInput = '';
 
   List checkBS(String text) {
@@ -38,7 +38,7 @@ class _SleepScreenState extends State<SleepScreen> {
       RegExp c = new RegExp(r'([0-9]{1,2}?)+(\.[0-9]{1,2})');
       Iterable<Match> matches = c.allMatches(text);
       for (Match m in matches) {
-        double match = double.parse(m[0]);
+        double match = double.parse(m[0]!);
         bsData.add(match);
       }
     } else if (text.contains("后")) {
@@ -46,7 +46,7 @@ class _SleepScreenState extends State<SleepScreen> {
       RegExp c = new RegExp(r'([0-9]{1,2}?)+(\.[0-9]{1,2})');
       Iterable<Match> matches = c.allMatches(text);
       for (Match m in matches) {
-        double match = double.parse(m[0]);
+        double match = double.parse(m[0]!);
         bsData.add(match);
       }
     }
@@ -72,7 +72,7 @@ class _SleepScreenState extends State<SleepScreen> {
     );
   }
 
-  Quality selectedState;
+  Quality? selectedState;
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -111,7 +111,7 @@ class _SleepScreenState extends State<SleepScreen> {
                                 backGroundColor, context),
                         cardChild: IconFont(
                           icon: CupertinoIcons.battery_25,
-                          lable: AppLocalization.of(context).translate("sleep_input_button1"),
+                          label: AppLocalization.of(context).translate("sleep_input_button1"),
                           textStyle: selectedState == Quality.bad
                               ? kSelctedTextStyle
                               : kLabelTextStyle,
@@ -134,7 +134,7 @@ class _SleepScreenState extends State<SleepScreen> {
                                 backGroundColor, context),
                         cardChild: IconFont(
                           icon: CupertinoIcons.smiley,
-                          lable: AppLocalization.of(context).translate("sleep_input_button2"),
+                          label: AppLocalization.of(context).translate("sleep_input_button2"),
                           textStyle: selectedState == Quality.good
                               ? kSelctedTextStyle
                               : kLabelTextStyle,
@@ -284,7 +284,7 @@ class _SleepScreenState extends State<SleepScreen> {
                   ),
                 ),
                 ButtonButton(
-                  onTap: () {
+                  onTap: () async {
                     if (_voiceInput != "") {
                       print(_voiceInput);
                       List bsList = checkBS(_voiceInput);
@@ -306,7 +306,7 @@ class _SleepScreenState extends State<SleepScreen> {
                                   builder: (context) => SleepResultScreen(
                                       sleep: bsList[2], state: bsList[1])));
                         } else {
-                          return showDialog<void>(
+                          return await showDialog<void>(
                               context: context,
                               barrierDismissible:
                                   false, // user must tap button!
@@ -368,7 +368,7 @@ class _SleepScreenState extends State<SleepScreen> {
                             "${date.year.toString()}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}";
                         SleepDB sleepDB = SleepDB(
                           sleep: sleepTime,
-                          state: selectedState.index,
+                          state: selectedState!.index,
                           date: time,
                         );
                         SleepDataBaseProvider.db.insert(sleepDB);
@@ -376,7 +376,7 @@ class _SleepScreenState extends State<SleepScreen> {
                             context,
                             CupertinoPageRoute(
                                 builder: (context) => SleepResultScreen(
-                                    sleep: sleepTime, state: selectedState.index)));
+                                    sleep: sleepTime, state: selectedState!.index)));
                       } else {
                         return showDialog<void>(
                             context: context,

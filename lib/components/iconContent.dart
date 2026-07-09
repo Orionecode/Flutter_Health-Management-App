@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 
 class IconFont extends StatelessWidget {
-  IconFont({this.icon, this.lable, this.textStyle,this.colorStyle});
+  IconFont({required this.icon, required this.label, required this.textStyle,required this.colorStyle});
   final IconData icon;
-  final String lable;
+  final String label;
   final TextStyle textStyle;
   final Color colorStyle;
 
@@ -21,7 +21,7 @@ class IconFont extends StatelessWidget {
         const SizedBox(
           height: 10.0,
         ),
-        Text(lable, style: textStyle)
+        Text(label, style: textStyle)
       ],
     );
   }
